@@ -1,12 +1,12 @@
 function PhotoObject(element, id) {
   const descriptions = ['some random text', 'funny image', 'cool photo']
-  const photo = {
+
+  return {
     id: id + 1,
     url: `photos/${id + 1}.jpg`,
     descriptions: descriptions[getRandomInt(0, descriptions.length)],
     comments: new Array(getRandomInt(0, 6)).fill(null).map((element, id) => CommentObject('_', id))
   }
-  return photo
 }
 
 function CommentObject(element, id) {
@@ -20,14 +20,12 @@ function CommentObject(element, id) {
   ]
   const names = ['Олег', 'Андрей', 'Артем', 'Евгений', 'Максим', 'Анатолий', 'Дмитрий']
 
-  const comment = {
+  return {
     id: id + 1,
     avatar: `img/avatar-${getRandomInt(1, 7)}.svg`,
     message: comments[getRandomInt(0, comments.length)],
     name: names[getRandomInt(0, comments.length)]
   }
-
-  return comment
 }
 
 function getRandomInt(min, max) {
