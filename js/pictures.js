@@ -4,13 +4,10 @@ const picturesContainer = document.querySelector('.pictures')
 
 function createPictureElement(pictureUrl, commentsAmount, likesAmount) {
   const clone = document.querySelector('#picture').content.cloneNode(true)
-  const picture = clone.querySelector('.picture__img')
-  const comments = clone.querySelector('.picture__comments')
-  const likes = clone.querySelector('.picture__likes')
 
-  picture.src = pictureUrl
-  comments.textContent = commentsAmount
-  likes.textContent = likesAmount
+  clone.querySelector('.picture__img').src = pictureUrl
+  clone.querySelector('.picture__comments').textContent = commentsAmount
+  clone.querySelector('.picture__likes').textContent = likesAmount
 
   return clone
 }
