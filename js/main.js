@@ -1,15 +1,32 @@
-function PhotoObject(element, id) {
+function getRandomInt(min, max) {
+  return Math.floor(Math.random() * (max - min +1) + min);
+}
+
+function getRandomElementFromArray(lengthMin, lengthMax, array){
+  return array[getRandomInt(lengthMin, lengthMax)]
+}
+
+function getPhoto(id) { // id starts with 1
   const descriptions = ['some random text', 'funny image', 'cool photo']
+  const commentsLength = {
+    min: 0,
+    max: 20
+  }
+  const likesAmount = {
+    min: 15,
+    max: 200
+  }
 
   return {
     id: id + 1,
     url: `photos/${id + 1}.jpg`,
-    descriptions: descriptions[getRandomInt(0, descriptions.length)],
-    comments: new Array(getRandomInt(0, 6)).fill(null).map((element, id) => CommentObject('_', id))
+    descriptions: getRandomElementFromArray(0, descriptions.length - 1, descriptions),
+    likes: getRandomInt(likesAmount.min, likesAmount.max),
+    comments: new Array(getRandomInt(commentsLength.min, commentsLength.max)).fill(null).map((_, id) => getComment(id))
   }
 }
 
-function CommentObject(element, id) {
+function getComment(id) { // id starts with 1
   const comments = [
     'Все відмінно!',
     'Загалом все непогано. Але не всі.',
@@ -19,21 +36,21 @@ function CommentObject(element, id) {
     'Обличчя людей на фотці перекошені, ніби їх побивають. Як можна було зловити такий невдалий момент?'
   ]
   const names = ['Олег', 'Андрей', 'Артем', 'Евгений', 'Максим', 'Анатолий', 'Дмитрий']
+  const avatarId = {
+    min: 0,
+    max: 6
+  }
 
   return {
     id: id + 1,
-    avatar: `img/avatar-${getRandomInt(1, 7)}.svg`,
-    message: comments[getRandomInt(0, comments.length)],
-    name: names[getRandomInt(0, comments.length)]
+    avatar: `img/avatar-${getRandomInt(avatarId.min, avatarId.max)}.svg`,
+    message: getRandomElementFromArray(0, comments.length - 1, comments),
+    name: getRandomElementFromArray(0, names.length - 1, names)
   }
 }
 
-function getRandomInt(min, max) {
-  return Math.floor(Math.random() * (max - min) + min);
-}
-
 function createArrayOfPhotos(arrayLength) {
-  return new Array(arrayLength).fill(null).map((element, id) => PhotoObject('_', id))
+  return new Array(arrayLength).fill(null).map((_, id) => getPhoto(id))
 }
 
 const photos = createArrayOfPhotos(25)
