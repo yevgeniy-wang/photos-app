@@ -7,23 +7,24 @@ function createPictureElement(picture) {
 
 
   clone.querySelector('.picture__img').src = picture.url
-  clone.querySelector('.picture__img').setAttribute('data-id', picture.id)
+  clone.querySelector('.picture').setAttribute('data-id', picture.id)
   clone.querySelector('.picture__comments').textContent = picture.comments.length
   clone.querySelector('.picture__likes').textContent = picture.likes
 
   return clone
 }
 
-function createAllPictureElements(container, picturesArray) {
+function createAllElements(container, picturesArray, callback) {
   const fragment = document.createDocumentFragment()
 
   picturesArray.forEach(element => {
-    fragment.append(createPictureElement(element))
+    fragment.append(callback(element))
   })
 
   container.append(fragment)
 }
 
-createAllPictureElements(picturesContainer, photos)
 
-export {createAllPictureElements}
+createAllElements(picturesContainer, photos, createPictureElement)
+
+export {createAllElements}
