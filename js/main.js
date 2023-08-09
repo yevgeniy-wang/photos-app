@@ -37,7 +37,7 @@ function getComment(id) { // id starts with 1
     ]
     const names = ['Олег', 'Андрей', 'Артем', 'Евгений', 'Максим', 'Анатолий', 'Дмитрий']
     const avatarId = {
-        min: 0,
+        min: 1,
         max: 6
     }
 
