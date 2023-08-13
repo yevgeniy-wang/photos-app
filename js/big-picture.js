@@ -9,7 +9,7 @@ let commentsCounter = 5
 
 function closeBigPicture() {
   document.querySelector('.big-picture').classList.add('hidden')
-  document.querySelector('body').classList.remove('modal-open')
+  document.body.classList.remove('modal-open')
   commentsCounter = 5
 }
 
@@ -56,8 +56,4 @@ picturesContainer.addEventListener('click', (event) => {
 
 closeBtn.addEventListener('click', closeBigPicture)
 
-document.addEventListener('keydown', (event) => {
-  if (event.key === 'Escape') {
-    closeBigPicture()
-  }
-})
+export {closeBigPicture}
