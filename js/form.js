@@ -23,17 +23,19 @@ function validateHashtags() {
   hashtagField.setCustomValidity('')
 
   hashtagsArray.forEach(hashtag => {
-    if (hashtagField.value !== '' && hashtag[0] !== '#') {
+    if (hashtagField.value === ''){
+      return
+    }else if (hashtag[0] !== '#') {
       hashtagField.setCustomValidity('hashtag must start with #')
-    } else if (hashtagField.value !== '' && !/^[A-Za-z0-9А-яЁё]*$/.test(hashtag.substring(1))) {
+    } else if (!/^[A-Za-z0-9А-яЁё]*$/.test(hashtag.substring(1))) {
       hashtagField.setCustomValidity('hashtag must not contain special characters')
-    } else if (hashtagField.value !== '' && hashtag.length < 2 || hashtag.length > 20) {
+    } else if (hashtag.length < 2 || hashtag.length > 20) {
       hashtagField.setCustomValidity('hashtag length must be from 2 to 20 characters')
     }
   })
 
   if (uniqueHashtags.size !== hashtagsArray.length) {
-    hashtagField.setCustomValidity('there must be   duplicates')
+    hashtagField.setCustomValidity('there must be duplicates')
   } else if (hashtagsArray.length > 5) {
     hashtagField.setCustomValidity('there must be no more then 5 hashtags')
   }
@@ -44,8 +46,9 @@ function validateHashtags() {
 function handleEscButton() {
   const isFormOpen = document.querySelector('#upload-file').value
   const isActiveCommentsField = document.querySelector('.text__description') === document.activeElement
+  const isActiveHashtagsField = document.querySelector('.text__hashtags') === document.activeElement
 
-  if (isFormOpen && !isActiveCommentsField) {
+  if (isFormOpen && !isActiveCommentsField && !isActiveHashtagsField) {
     closeForm()
   } else if (!isFormOpen) {
     closeBigPicture()
