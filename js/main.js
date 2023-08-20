@@ -1,58 +1,45 @@
-function getRandomInt(min, max) {
-  return Math.floor(Math.random() * (max - min + 1) + min);
-}
+import {createAllElements, createPictureElement} from "./pictures.js";
+import {closeBigPicture, openBigPicture} from "./big-picture.js";
+import {openForm, closeForm, setMaxLength, handleEscButton, validateHashtags} from "./form.js"
 
-function getRandomElementFromArray(lengthMin, lengthMax, array) {
-  return array[getRandomInt(lengthMin, lengthMax)]
-}
+const picturesContainer = document.querySelector('.pictures')
+const commentsContainer = document.querySelector('.social__comments')
 
-function getPhoto(id) { // id starts with 1
-  const descriptions = ['some random text', 'funny image', 'cool photo']
-  const commentsLength = {
-    min: 0,
-    max: 20
-  }
-  const likesAmount = {
-    min: 15,
-    max: 200
-  }
 
-  return {
-    id: id + 1,
-    url: `photos/${id + 1}.jpg`,
-    descriptions: getRandomElementFromArray(0, descriptions.length - 1, descriptions),
-    likes: getRandomInt(likesAmount.min, likesAmount.max),
-    comments: new Array(getRandomInt(commentsLength.min, commentsLength.max)).fill(null).map((_, id) => getComment(id))
+async function getRequest(url) {
+  try {
+    const response = await fetch(url)
+    return await response.json()
+  } catch (err) {
+    document.querySelector('.response-error').classList.remove('hidden')
+    document.querySelector('.response-error__message').textContent = err.message
   }
 }
 
-function getComment(id) { // id starts with 1
-  const comments = [
-    'Все відмінно!',
-    'Загалом все непогано. Але не всі.',
-    'Коли ви робите фотографію, добре б прибирати палець із кадру. Зрештою, це просто непрофесійно.',
-    'Моя бабуся випадково чхнула з фотоапаратом у руках і у неї вийшла фотографія краща.',
-    'Я послизнувся на банановій шкірці і впустив фотоапарат на кота і у мене вийшла фотографія краще.',
-    'Обличчя людей на фотці перекошені, ніби їх побивають. Як можна було зловити такий невдалий момент?'
-  ]
-  const names = ['Олег', 'Андрей', 'Артем', 'Евгений', 'Максим', 'Анатолий', 'Дмитрий']
-  const avatarId = {
-    min: 1,
-    max: 6
-  }
+getRequest('http://localhost:3000/photos')
+  .then(res => {
+    createAllElements(picturesContainer, res, createPictureElement)
 
-  return {
-    id: id + 1,
-    avatar: `img/avatar-${getRandomInt(avatarId.min, avatarId.max)}.svg`,
-    message: getRandomElementFromArray(0, comments.length - 1, comments),
-    name: getRandomElementFromArray(0, names.length - 1, names)
-  }
-}
+    picturesContainer.addEventListener('click', (event) => {
+      openBigPicture(event, commentsContainer, res)
+    })
+    document.querySelector('.big-picture__cancel').addEventListener('click', closeBigPicture)
 
-function createArrayOfPhotos(arrayLength) {
-  return new Array(arrayLength).fill(null).map((_, id) => getPhoto(id))
-}
-
-const photos = createArrayOfPhotos(25)
-
-export {photos}
+    document.querySelector(' #upload-cancel').addEventListener('click', closeForm)
+    document.querySelector('#upload-file').addEventListener('change', () => {
+      openForm()
+      setMaxLength('text__description', 140)
+    })
+    document.querySelector('.img-upload__submit').addEventListener('click', (event) => {
+      event.preventDefault()
+      validateHashtags()
+    })
+    document.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape') {
+        handleEscButton()
+      }
+    })
+  })
+  .catch(err => {
+    console.error(err.message)
+  })
