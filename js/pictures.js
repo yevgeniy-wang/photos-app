@@ -1,10 +1,5 @@
-import {photos} from "./main.js";
-
-const picturesContainer = document.querySelector('.pictures')
-
 function createPictureElement(picture) {
   const clone = document.querySelector('#picture').content.cloneNode(true)
-
 
   clone.querySelector('.picture__img').src = picture.url
   clone.querySelector('.picture').setAttribute('data-id', picture.id)
@@ -24,7 +19,4 @@ function createAllElements(container, picturesArray, callback) {
   container.append(fragment)
 }
 
-
-createAllElements(picturesContainer, photos, createPictureElement)
-
-export {createAllElements}
+export {createAllElements, createPictureElement}

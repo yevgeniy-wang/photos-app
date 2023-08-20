@@ -23,9 +23,9 @@ function validateHashtags() {
   hashtagField.setCustomValidity('')
 
   hashtagsArray.forEach(hashtag => {
-    if (hashtagField.value === ''){
+    if (hashtagField.value === '') {
       return
-    }else if (hashtag[0] !== '#') {
+    } else if (hashtag[0] !== '#') {
       hashtagField.setCustomValidity('hashtag must start with #')
     } else if (!/^[A-Za-z0-9А-яЁё]*$/.test(hashtag.substring(1))) {
       hashtagField.setCustomValidity('hashtag must not contain special characters')
@@ -55,17 +55,4 @@ function handleEscButton() {
   }
 }
 
-document.querySelector(' #upload-cancel').addEventListener('click', closeForm)
-document.querySelector('#upload-file').addEventListener('change', () => {
-  openForm()
-  setMaxLength('text__description', 140)
-})
-document.querySelector('.img-upload__submit').addEventListener('click', (event) => {
-  event.preventDefault()
-  validateHashtags()
-})
-document.addEventListener('keydown', (event) => {
-  if (event.key === 'Escape') {
-    handleEscButton()
-  }
-})
+export {openForm, closeForm, setMaxLength, handleEscButton, validateHashtags}

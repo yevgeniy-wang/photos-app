@@ -1,9 +1,5 @@
-import {photos} from './main.js'
 import {createAllElements} from './pictures.js'
 
-const picturesContainer = document.querySelector('.pictures')
-const closeBtn = document.querySelector('.big-picture__cancel')
-const commentsContainer = document.querySelector('.social__comments')
 let currentComments = []
 let commentsCounter = 5
 
@@ -29,12 +25,12 @@ function addComment(comment) {
 }
 
 
-function openBigPicture(event, commentsList) {
+function openBigPicture(event, commentsList, arrayOfPhotos) {
   const closestPicture = event.target.closest('.picture')
 
   if (closestPicture) {
     const dataId = +closestPicture.dataset.id
-    const pictureData = photos.find(element => element.id === dataId)
+    const pictureData = arrayOfPhotos.find(element => element.id === dataId)
 
     currentComments = pictureData.comments
 
@@ -50,10 +46,4 @@ function openBigPicture(event, commentsList) {
   }
 }
 
-picturesContainer.addEventListener('click', (event) => {
-  openBigPicture(event, commentsContainer)
-})
-
-closeBtn.addEventListener('click', closeBigPicture)
-
-export {closeBigPicture}
+export {closeBigPicture, openBigPicture}
