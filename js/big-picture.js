@@ -48,6 +48,20 @@ function closeBigPicture() {
 
 }
 
+function loadComments() {
+  const step = 5
+
+  arrayLengthCounter(step, pictureData.comments)
+
+  const currentComments = sliceArray(pictureData.comments, commentsCount)
+
+  document.querySelector('.comments-shown').textContent = currentComments.length
+
+  clearElementContent('social__comments')
+  hideAndDisplayCommentsLoaderBtn(pictureData.comments, commentsCount)
+  createAllElements(commentsContainer, currentComments, addComment)
+}
+
 function openBigPicture(event, commentsList, arrayOfPhotos) {
   const closestPicture = event.target.closest('.picture')
 
@@ -71,18 +85,4 @@ function openBigPicture(event, commentsList, arrayOfPhotos) {
   }
 }
 
-function loadComments() {
-  const step = 5
-
-  arrayLengthCounter(step, pictureData.comments)
-
-  const currentComments = sliceArray(pictureData.comments, commentsCount)
-
-  document.querySelector('.comments-shown').textContent = currentComments.length
-
-  clearElementContent('social__comments')
-  hideAndDisplayCommentsLoaderBtn(pictureData.comments, commentsCount)
-  createAllElements(commentsContainer, currentComments, addComment)
-}
-
-export {closeBigPicture, openBigPicture, loadComments}
+export {closeBigPicture, openBigPicture}

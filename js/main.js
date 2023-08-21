@@ -1,5 +1,5 @@
 import {createAllElements, createPictureElement} from "./pictures.js";
-import {closeBigPicture, openBigPicture, loadComments} from "./big-picture.js";
+import {closeBigPicture, openBigPicture} from "./big-picture.js";
 import {openForm, closeForm, setMaxLength, handleEscButton, validateHashtags} from "./form.js"
 
 const picturesContainer = document.querySelector('.pictures')
