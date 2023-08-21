@@ -43,3 +43,4 @@ getRequest('http://localhost:3000/photos')
   .catch(err => {
     console.error(err.message)
   })
+
