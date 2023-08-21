@@ -1,5 +1,5 @@
 import {createAllElements, createPictureElement} from "./pictures.js";
-import {closeBigPicture, openBigPicture} from "./big-picture.js";
+import {closeBigPicture, openBigPicture, loadComments} from "./big-picture.js";
 import {openForm, closeForm, setMaxLength, handleEscButton, validateHashtags} from "./form.js"
 
 const picturesContainer = document.querySelector('.pictures')
@@ -23,6 +23,7 @@ getRequest('http://localhost:3000/photos')
     picturesContainer.addEventListener('click', (event) => {
       openBigPicture(event, commentsContainer, res)
     })
+
     document.querySelector('.big-picture__cancel').addEventListener('click', closeBigPicture)
 
     document.querySelector(' #upload-cancel').addEventListener('click', closeForm)
@@ -43,4 +44,3 @@ getRequest('http://localhost:3000/photos')
   .catch(err => {
     console.error(err.message)
   })
-
