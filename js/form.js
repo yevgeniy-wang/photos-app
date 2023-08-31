@@ -1,4 +1,52 @@
-import {closeBigPicture} from "./big-picture.js";
+import {closeBigPicture, openBigPicture} from "./big-picture.js";
+import {createAllElements, createPictureElement} from "./pictures.js";
+
+
+function openPopup(type, callback){
+  const popup = document.querySelector(`#${type}`).content.cloneNode(true)
+  document.body.append(popup)
+  document.querySelector(`.${type}__button`).addEventListener('click',()=>{
+    closePopup(type)
+  } )
+  document.addEventListener('click', (evt) => {
+    if (evt.target === document.querySelector(`.${type}`)){
+      callback()
+    }
+  })
+}
+// function showSuccessPopup(){
+//   const popup = document.querySelector('#success').content.cloneNode(true)
+//   document.body.append(popup)
+//   document.querySelector('.success__button').addEventListener('click', closeSuccessPopup)
+//   document.addEventListener('click', (evt) => {
+//     if (evt.target === document.querySelector('.success')){
+//       closeSuccessPopup()
+//     }
+//   })
+//
+// }
+
+function closePopup(type){
+  document.querySelector(`.${type}`).remove()
+}
+// function closeSuccessPopup(){
+//   document.querySelector('.success').remove()
+// }
+
+// function showErrorPopup(){
+//   const popup = document.querySelector('#error').content.cloneNode(true)
+//   document.body.append(popup)
+//   document.querySelector('.error__button').addEventListener('click', closeErrorPopup)
+//   document.addEventListener('click', (evt) => {
+//     if (evt.target === document.querySelector('.error')){
+//       closeErrorPopup()
+//     }
+//   })
+//
+// }
+// function closeErrorPopup(){
+//   document.querySelector('.error').remove()
+// }
 
 function percentsToFraction(percents) {
   return percents / 100
@@ -132,18 +180,80 @@ function effectsHandler(evt) {
       break
     default:
       closeSlider(slider)
+      addEffect(image)
       break
   }
 }
+
+function openImage(evt){
+  const reader = new FileReader()
+  const image = document.querySelector('.img-upload__preview').querySelector('img')
+
+  reader.onload = (evt) => {
+    image.src = evt.target.result;
+  }
+
+  reader.readAsDataURL(evt.target.files[0])
+}
+
+function renderContent(photosArray){
+  const picturesContainer = document.querySelector('.pictures')
+  const commentsContainer = document.querySelector('.social__comments')
+  const photoElements = document.querySelectorAll('.picture')
+
+  if (photoElements.length){
+    photoElements.forEach(element => element.remove())
+  }
+
+  createAllElements(picturesContainer, photosArray, createPictureElement)
+
+  picturesContainer.addEventListener('click', (event) => {
+    openBigPicture(event, commentsContainer, photosArray)
+  })
+}
+
+ async function uploadImage(evt) {
+   evt.preventDefault()
+
+   const formData = new FormData(document.querySelector('.img-upload__form'))
+   const image = document.querySelector('.img-upload__preview').querySelector('img')
+   const picturesContainer = document.querySelector('.pictures')
+   const commentsContainer = document.querySelector('.social__comments')
+
+   formData.set('url', image.src)
+   formData.delete('filename')
+
+   try {
+     const response = await fetch('http://localhost:3000/photo', {
+       method: "POST",
+       body: formData
+     })
+     const data = await response.json()
+
+     closeForm()
+     renderContent(data)
+     openPopup('success')
+     // createPictureElement
+
+
+     // return await response.text()
+   }catch (err){
+     // console.error(err.message)
+     openPopup('error')
+   }
+ }
 
 function closeForm() {
   document.querySelector('.img-upload__overlay').classList.add('hidden')
   document.body.classList.remove('modal-open')
   document.querySelector('#upload-file').value = ''
+  document.querySelector('.img-upload__form').reset()
   document.querySelector('.effects__list').removeEventListener('click', effectsHandler)
   document.querySelector('.img-upload__scale').removeEventListener('click', scaleHandler)
+  document.querySelector('.img-upload__form').removeEventListener('submit', uploadImage)
   scaleImage(document.querySelector('.img-upload__preview'), 100)
   addEffect(document.querySelector('.img-upload__preview').querySelector('img'))
+
 }
 
 function openForm() {
@@ -155,6 +265,8 @@ function openForm() {
 
   document.querySelector('.effects__list').addEventListener('click', effectsHandler)
   document.querySelector('.img-upload__scale').addEventListener('click', scaleHandler)
+  document.querySelector('.img-upload__submit').addEventListener('click', validateHashtags)
+  document.querySelector('.img-upload__form').addEventListener('submit', uploadImage)
 
 }
 
@@ -194,12 +306,18 @@ function handleEscButton() {
   const isFormOpen = document.querySelector('#upload-file').value
   const isActiveCommentsField = document.querySelector('.text__description') === document.activeElement
   const isActiveHashtagsField = document.querySelector('.text__hashtags') === document.activeElement
+  const isSuccessPopupOpen = document.querySelector('.success')
+  const isErrorPopupOpen = document.querySelector('.error')
 
   if (isFormOpen && !isActiveCommentsField && !isActiveHashtagsField) {
     closeForm()
+  }else if (isSuccessPopupOpen){
+    closePopup('success')
+  } else if (isErrorPopupOpen) {
+    closePopup('error')
   } else if (!isFormOpen) {
     closeBigPicture()
   }
 }
 
-export {openForm, closeForm, setMaxLength, handleEscButton, validateHashtags}
+export {openForm, closeForm, setMaxLength, handleEscButton, validateHashtags, openImage}
