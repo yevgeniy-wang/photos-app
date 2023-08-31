@@ -77,6 +77,8 @@ function openBigPicture(event, commentsList, arrayOfPhotos) {
     document.querySelector('.comments-count').textContent = pictureData.comments.length
     document.querySelector('.social__caption').textContent = pictureData.descriptions
     document.querySelector('.comments-shown').textContent = currentComments.length
+    document.querySelector('.big-picture__img').style.transform = pictureData.metadata.transform
+    document.querySelector('.big-picture__img').style.filter = pictureData.metadata.filter
 
     hideAndDisplayCommentsLoaderBtn(pictureData.comments, commentsCount)
     createAllElements(commentsList, currentComments, addComment)

@@ -14,39 +14,10 @@ function openPopup(type, callback){
     }
   })
 }
-// function showSuccessPopup(){
-//   const popup = document.querySelector('#success').content.cloneNode(true)
-//   document.body.append(popup)
-//   document.querySelector('.success__button').addEventListener('click', closeSuccessPopup)
-//   document.addEventListener('click', (evt) => {
-//     if (evt.target === document.querySelector('.success')){
-//       closeSuccessPopup()
-//     }
-//   })
-//
-// }
 
 function closePopup(type){
   document.querySelector(`.${type}`).remove()
 }
-// function closeSuccessPopup(){
-//   document.querySelector('.success').remove()
-// }
-
-// function showErrorPopup(){
-//   const popup = document.querySelector('#error').content.cloneNode(true)
-//   document.body.append(popup)
-//   document.querySelector('.error__button').addEventListener('click', closeErrorPopup)
-//   document.addEventListener('click', (evt) => {
-//     if (evt.target === document.querySelector('.error')){
-//       closeErrorPopup()
-//     }
-//   })
-//
-// }
-// function closeErrorPopup(){
-//   document.querySelector('.error').remove()
-// }
 
 function percentsToFraction(percents) {
   return percents / 100
@@ -221,6 +192,7 @@ function renderContent(photosArray){
    const commentsContainer = document.querySelector('.social__comments')
 
    formData.set('url', image.src)
+   formData.set('filter', image.style.filter)
    formData.delete('filename')
 
    try {
@@ -233,12 +205,7 @@ function renderContent(photosArray){
      closeForm()
      renderContent(data)
      openPopup('success')
-     // createPictureElement
-
-
-     // return await response.text()
    }catch (err){
-     // console.error(err.message)
      openPopup('error')
    }
  }
