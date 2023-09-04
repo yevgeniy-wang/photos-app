@@ -1,6 +1,6 @@
 import {createAllElements, createPictureElement} from "./pictures.js";
 import {closeBigPicture, openBigPicture} from "./big-picture.js";
-import {openForm, closeForm, setMaxLength, handleEscButton, validateHashtags} from "./form.js"
+import {openForm, closeForm, setMaxLength, handleEscButton, validateHashtags, openImage} from "./form.js"
 
 const picturesContainer = document.querySelector('.pictures')
 const commentsContainer = document.querySelector('.social__comments')
@@ -27,13 +27,10 @@ getRequest('http://localhost:3000/photos')
     document.querySelector('.big-picture__cancel').addEventListener('click', closeBigPicture)
 
     document.querySelector(' #upload-cancel').addEventListener('click', closeForm)
-    document.querySelector('#upload-file').addEventListener('change', () => {
+    document.querySelector('#upload-file').addEventListener('change', (evt) => {
       openForm()
+      openImage(evt)
       setMaxLength('text__description', 140)
-    })
-    document.querySelector('.img-upload__submit').addEventListener('click', (event) => {
-      event.preventDefault()
-      validateHashtags()
     })
     document.addEventListener('keydown', (event) => {
       if (event.key === 'Escape') {

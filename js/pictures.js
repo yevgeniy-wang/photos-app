@@ -5,6 +5,7 @@ function createPictureElement(picture) {
   clone.querySelector('.picture').setAttribute('data-id', picture.id)
   clone.querySelector('.picture__comments').textContent = picture.comments.length
   clone.querySelector('.picture__likes').textContent = picture.likes
+  clone.querySelector('.picture__img').style.filter = picture.metadata.filter
 
   return clone
 }
